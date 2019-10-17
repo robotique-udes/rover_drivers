@@ -6,8 +6,8 @@
 //servo-moteurs
 /*le servo vertical utilise la pin 13
   et le servo Horizontal la pin 12 */
-ServoMoteur servoCamVertical(13); 
-ServoMoteur servoCamHorizontal(12);
+ServoMoteur servoCamVertical(13,20000,1500,2500,90,-90); 
+ServoMoteur servoCamHorizontal(12,20000,1500,2500,90,-90);
 
 //node
 ros::NodeHandle nh;
