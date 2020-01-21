@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ros.h>
-#include "rover_control/CamCommand.h"
+#include "rover_udes/CamCommand.h"
 #include "ServoMoteur.h"
 
 //servo-moteurs
@@ -13,14 +13,14 @@ ServoMoteur servoCamHorizontal(12,20000,1500,2500,90,-90);
 ros::NodeHandle nh;
 
 // callback ros
-void servoCam_cb (const rover_control::CamCommand &angles)
+void servoCam_cb (const rover_udes::CamCommand &angles)
 {
   servoCamHorizontal.setAngle(angles.cam_horizontal);
   servoCamVertical.setAngle(angles.cam_vertical);
 }
 
 //subcriber utilisant le callback servo_cb
-ros::Subscriber<rover_control::CamCommand> ear ("cam_cmd",servoCam_cb);
+ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",servoCam_cb);
 
 
 
