@@ -1,5 +1,5 @@
 #include <ros.h>
-#include "rover_control/CamCommand.h"
+#include "rover_udes/CamCommand.h"
 #include "Encodeur.h" //utilise le timer 2
 #include <Servo.h>
 
@@ -17,7 +17,7 @@ int objectifServoHorizontal = 0;
 ros::NodeHandle nh;
 
 // callback ros
-void servoCam_cb (const rover_control::CamCommand &angles)
+void servoCam_cb (const rover_udes::CamCommand &angles)
 {
   objectifServoHorizontal = angles.cam_vertical;
   servoCamVertical.writeMicroseconds((int)1500+angles.cam_horizontal*500/90);
@@ -42,7 +42,7 @@ void updateServoCamH()
 
 
 //subcriber utilisant le callback servo_cb
-ros::Subscriber<rover_control::CamCommand> ear ("cam_cmd",servoCam_cb);
+ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",servoCam_cb);
 
 
 
