@@ -1,7 +1,7 @@
 #include <ros.h>
 #include "rover_udes/CamCommand.h"
 #include "Encodeur.cpp" //utilise le timer 2
-#include <Servo.cpp>
+#include <Servo.h>
 
 //servo-moteurs
 /*le servo vertical utilise la pin 10
