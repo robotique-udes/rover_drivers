@@ -2,7 +2,7 @@
 #define ENCODEUR_H
 
 #include <Arduino.h>
-#include "gestionaireTimer2.h"
+#include "gestionaireTimer2.c"
 class Encodeur
 {
 protected:

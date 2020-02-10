@@ -1,7 +1,7 @@
 #ifndef GESTIONAIRETIMER2_H
 #define GESTIONAIRETIMER2_H
 
-#include <MsTimer2.h>
+//#include <MsTimer2.h>
 
 
 class gestionaireTimer2
