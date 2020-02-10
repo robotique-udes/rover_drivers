@@ -1,25 +1,4 @@
-#ifndef ENCODEUR_H
-#define ENCODEUR_H
-
-#include <Arduino.h>
-#include "gestionaireTimer2.cpp"
-class Encodeur
-{
-protected:
-    static float _position[10];
-    static int _derniereLecture[10];
-    static int _pin[10];
-
-    static bool initialisation;
-    static int nbr;
-    static void update();
-
-    int id;
-
-public:
-    Encodeur(int pin);
-    float ReadAngle();
-};
+#include "Encodeur.h"
 
 int Encodeur::nbr = 0;
 bool Encodeur::initialisation = false;
@@ -70,5 +49,3 @@ float Encodeur::ReadAngle()
 {
     return _position[id];
 }
-
-#endif

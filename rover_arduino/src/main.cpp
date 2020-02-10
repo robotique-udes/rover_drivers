@@ -1,6 +1,6 @@
 #include <ros.h>
 #include "rover_udes/CamCommand.h"
-#include "Encodeur.cpp" //utilise le timer 2
+#include "Encodeur.h" //utilise le timer 2
 #include <Servo.h>
 
 //servo-moteurs
