@@ -1,26 +1,26 @@
-#ifndef _ROS_rover_control_CamCommand_h
-#define _ROS_rover_control_CamCommand_h
+#ifndef _ROS_rover_udes_CamCommand_h
+#define _ROS_rover_udes_CamCommand_h
 
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
 
-namespace rover_control
+namespace rover_udes
 {
 
   class CamCommand : public ros::Msg
   {
     public:
-      typedef bool _is_active_type;
-      _is_active_type is_active;
+      typedef bool _is_pano_type;
+      _is_pano_type is_pano;
       typedef int32_t _cam_horizontal_type;
       _cam_horizontal_type cam_horizontal;
       typedef int32_t _cam_vertical_type;
       _cam_vertical_type cam_vertical;
 
     CamCommand():
-      is_active(0),
+      is_pano(0),
       cam_horizontal(0),
       cam_vertical(0)
     {
@@ -32,10 +32,10 @@ namespace rover_control
       union {
         bool real;
         uint8_t base;
-      } u_is_active;
-      u_is_active.real = this->is_active;
-      *(outbuffer + offset + 0) = (u_is_active.base >> (8 * 0)) & 0xFF;
-      offset += sizeof(this->is_active);
+      } u_is_pano;
+      u_is_pano.real = this->is_pano;
+      *(outbuffer + offset + 0) = (u_is_pano.base >> (8 * 0)) & 0xFF;
+      offset += sizeof(this->is_pano);
       union {
         int32_t real;
         uint32_t base;
@@ -65,11 +65,11 @@ namespace rover_control
       union {
         bool real;
         uint8_t base;
-      } u_is_active;
-      u_is_active.base = 0;
-      u_is_active.base |= ((uint8_t) (*(inbuffer + offset + 0))) << (8 * 0);
-      this->is_active = u_is_active.real;
-      offset += sizeof(this->is_active);
+      } u_is_pano;
+      u_is_pano.base = 0;
+      u_is_pano.base |= ((uint8_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      this->is_pano = u_is_pano.real;
+      offset += sizeof(this->is_pano);
       union {
         int32_t real;
         uint32_t base;
@@ -95,8 +95,8 @@ namespace rover_control
      return offset;
     }
 
-    const char * getType(){ return "rover_control/CamCommand"; };
-    const char * getMD5(){ return "f4de1640bb03114deb99216973056177"; };
+    const char * getType(){ return "rover_udes/CamCommand"; };
+    const char * getMD5(){ return "6cbf974437ab72bc89c284fde406a0bd"; };
 
   };
 
