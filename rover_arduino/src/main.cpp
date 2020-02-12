@@ -5,11 +5,11 @@
 
 //servo-moteurs
 /*le servo vertical utilise la pin 10
-  et le servo Horizontal la pin 9
-  L'encodeur doit être brancher dans la pin A0 */
+  et le servo horizontal la pin 9
+  L'encodeur doit être branché dans la pin A0 */
 Servo servoCamVertical; 
 Servo servoCamHorizontal;
-Encodeur controlServoH('A0');
+Encodeur controlServoH(A0);
 int objectifServoHorizontal = 0;
 bool panoEnCours = false;
 
@@ -34,9 +34,6 @@ void servoCam_cb (const rover_udes::CamCommand &angles)
 		objectifServoHorizontal = angles.cam_horizontal;
 		servoCamVertical.writeMicroseconds((int)1500+angles.cam_vertical*500/90);
 	}
-
-
-	
 }
 
 //ajustement servoHorizontal
