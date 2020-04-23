@@ -1,12 +1,12 @@
-#ifndef _ROS_rover_control_Command_h
-#define _ROS_rover_control_Command_h
+#ifndef _ROS_rover_udes_Command_h
+#define _ROS_rover_udes_Command_h
 
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
 #include "ros/msg.h"
 
-namespace rover_control
+namespace rover_udes
 {
 
   class Command : public ros::Msg
@@ -95,7 +95,7 @@ namespace rover_control
      return offset;
     }
 
-    const char * getType(){ return "rover_control/Command"; };
+    const char * getType(){ return "rover_udes/Command"; };
     const char * getMD5(){ return "53e547be5f92f7cd818ea563ca9c778b"; };
 
   };
