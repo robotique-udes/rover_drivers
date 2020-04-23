@@ -4,8 +4,8 @@
 #include <Servo.h>
 
 //servo-moteurs
-/*le servo vertical utilise la pin 10
-  et le servo horizontal la pin 9
+/*le servo vertical utilise la pin 7
+  et le servo horizontal la pin 6
   L'encodeur doit être branché dans la pin A0 */
 Servo servoCamVertical; 
 Servo servoCamHorizontal;
@@ -39,7 +39,7 @@ void servoCam_cb (const rover_udes::CamCommand &angles)
 //ajustement servoHorizontal
 void updateServoCamH()
 {
-	const float tourEncParTourServo = 4;
+	const float tourEncParTourServo = 48.0/16.0;
 	float position = controlServoH.ReadAngle() / tourEncParTourServo;
 	static bool debutPano = true;
 
@@ -65,8 +65,8 @@ void updateServoCamH()
 	else
 	{	
 		int delta = objectifServoHorizontal - position;
-		while (delta >= 180)delta -= 360;
-		while (delta < -180)delta += 360;
+		// while (delta >= 180)delta -= 360;
+		// while (delta < -180)delta += 360;
 		int vitesse = 1500;
 		if (delta > 5) vitesse = 1700;
 		else if (delta > 0) vitesse = 1600;
@@ -82,8 +82,8 @@ ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",servoCam_cb);
 
 void setup()
 {
-	servoCamHorizontal.attach(9);
-	servoCamVertical.attach(10);
+	servoCamHorizontal.attach(6);
+	servoCamVertical.attach(7);
 	gestionaireTimer2::ajouter(updateServoCamH);
 
 	Serial.begin(57600);
