@@ -1,13 +1,13 @@
-#ifndef ENCODEUR_H
-#define ENCODEUR_H
+#ifndef KG_ENCODER_H
+#define KG_ENCODER_H
 
 #include <Arduino.h>
-#include "gestionaireTimer2.h"
-class Encodeur
+#include "kg_timer2_manager.h"
+class Encoder
 {
 protected:
     static float _position[10];
-    static int _derniereLecture[10];
+    static int _lastReading[10];
     static int _pin[10];
 
     static bool initialisation;
@@ -17,9 +17,9 @@ protected:
     int id;
 
 public:
-    Encodeur(int pin);
+    Encoder(int pin);
     float ReadAngle();
 };
 
 
-#endif
+#endif  //KG_ENCODER_H

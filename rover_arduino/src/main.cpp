@@ -1,90 +1,98 @@
 #include <ros.h>
 #include "rover_udes/CamCommand.h"
-#include "Encodeur.h" //utilise le timer 2
+#include "kg_encoder.h" //uses timer2
 #include <Servo.h>
 
-//servo-moteurs
-/*le servo vertical utilise la pin 7
-  et le servo horizontal la pin 6
-  L'encodeur doit être branché dans la pin A0 */
-Servo servoCamVertical; 
-Servo servoCamHorizontal;
-Encodeur controlServoH(A0);
-int objectifServoHorizontal = 0;
-bool panoEnCours = false;
+// Servomotors
+/*The vertical servo (up-down) uses Arduino pin 7
+  The horizontal servo (left-right) uses Arduino pin 6
+  The encoder for the horizontal servo has to be plugged in Arduino pin A0 */
+Servo verticalCamServo; 
+Servo horizontalCamServo;
+Encoder horizontalServoControl(A0);
+int horizontalServoGoal = 0;
+bool currentlyTakingPanorama = false;
 
-//node
+// ROS node
 ros::NodeHandle nh;
 
-// callback ros
-void servoCam_cb (const rover_udes::CamCommand &angles)
+// ROS callback
+void callback_camServo (const rover_udes::CamCommand &angles)
 {
-	if (angles.is_pano and !panoEnCours)
-	{
-		panoEnCours = true;
-	}
+	/* This will be used for implementing constant intervals picture taking for panoramas */
 
-	if (panoEnCours)
-	{
-		objectifServoHorizontal = 0;
-		servoCamVertical.writeMicroseconds((int)1500);
-	}
-	else
-	{
-		objectifServoHorizontal = angles.cam_horizontal;
-		servoCamVertical.writeMicroseconds((int)1500+angles.cam_vertical*500/90);
-	}
+	// if (angles.is_pano and !currentlyTakingPanorama)
+	// {
+	// 	currentlyTakingPanorama = true;
+	// }
+
+	// if (currentlyTakingPanorama)
+	// {
+	// 	horizontalServoGoal = 0;
+	// 	verticalCamServo.writeMicroseconds((int)1500);
+	// }
+	// else
+	// {
+		horizontalServoGoal = angles.cam_horizontal;
+		verticalCamServo.writeMicroseconds((int)1500+angles.cam_vertical*500/90);
+	// }
 }
 
-//ajustement servoHorizontal
-void updateServoCamH()
+// servoHorizontal
+void updateHorizontalCamServo()
 {
-	const float tourEncParTourServo = 48.0/16.0;
-	float position = controlServoH.ReadAngle() / tourEncParTourServo;
-	static bool debutPano = true;
+	const float encoderRotationsForEachServoRotation = 48.0/16.0;
+	float position = horizontalServoControl.ReadAngle() / encoderRotationsForEachServoRotation;
 
-	if (panoEnCours)
-	{
-		float posInit;
-		if (debutPano)
-		{
-			posInit = position;
-			debutPano = false;
-		}
+	/* This will be used for implementing constant intervals picture taking for panoramas */
 
-		if (position < (posInit + 360))
-		{
-			servoCamHorizontal.writeMicroseconds(1600);
-		}
-		else
-		{
-			panoEnCours = false;
-			debutPano = true;
-		}
-	}
-	else
-	{	
-		int delta = objectifServoHorizontal - position;
-		// while (delta >= 180)delta -= 360;
-		// while (delta < -180)delta += 360;
-		int vitesse = 1500;
-		if (delta > 5) vitesse = 1700;
-		else if (delta > 0) vitesse = 1600;
-		else if (delta < -5) vitesse = 1300;
-		else if (delta < 0) vitesse = 1400;
+	// static bool panoramaBeginning = true;
 
-		servoCamHorizontal.writeMicroseconds(vitesse);
-	}
+	// if (currentlyTakingPanorama)
+	// {
+	// 	float initialPosition;
+	// 	if (panoramaBeginning)
+	// 	{
+	// 		initialPosition = position;
+	// 		panoramaBeginning = false;
+	// 	}
+
+	// 	if (position < (initialPosition + 360))
+	// 	{
+	// 		horizontalCamServo.writeMicroseconds(1600);
+	// 	}
+	// 	else
+	// 	{
+	// 		currentlyTakingPanorama = false;
+	// 		panoramaBeginning = true;
+	// 	}
+	// }
+	// else
+	// {	
+		int delta = horizontalServoGoal - position;
+	
+	/*  These two statements can be enabled for the camera to always use the shortest path to reach its goal,
+	    but this could cause problems with the wires */
+				// while (delta >= 180)delta -= 360;
+				// while (delta < -180)delta += 360;
+		int speed = 1500;
+		if (delta > 5) speed = 1700;
+		else if (delta > 0) speed = 1600;
+		else if (delta < -5) speed = 1300;
+		else if (delta < 0) speed = 1400;
+
+		horizontalCamServo.writeMicroseconds(speed);
+	// }
 }
 
-//subcriber utilisant le callback servo_cb
-ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",servoCam_cb);
+// Subcriber using callback callback_camServo
+ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",callback_camServo);
 
 void setup()
 {
-	servoCamHorizontal.attach(6);
-	servoCamVertical.attach(7);
-	gestionaireTimer2::ajouter(updateServoCamH);
+	horizontalCamServo.attach(6);
+	verticalCamServo.attach(7);
+	Timer2Manager::add(updateHorizontalCamServo);
 
 	Serial.begin(57600);
 	nh.initNode();
@@ -93,6 +101,6 @@ void setup()
 
 void loop()
 {
-	//mise à jour de la node
+	// Continuously updating the node
 	nh.spinOnce();
 }
