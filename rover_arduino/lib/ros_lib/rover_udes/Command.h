@@ -14,15 +14,15 @@ namespace rover_udes
     public:
       typedef bool _is_active_type;
       _is_active_type is_active;
-      typedef float _linear_type;
-      _linear_type linear;
-      typedef float _angular_type;
-      _angular_type angular;
+      typedef float _right_type;
+      _right_type right;
+      typedef float _left_type;
+      _left_type left;
 
     Command():
       is_active(0),
-      linear(0),
-      angular(0)
+      right(0),
+      left(0)
     {
     }
 
@@ -39,23 +39,23 @@ namespace rover_udes
       union {
         float real;
         uint32_t base;
-      } u_linear;
-      u_linear.real = this->linear;
-      *(outbuffer + offset + 0) = (u_linear.base >> (8 * 0)) & 0xFF;
-      *(outbuffer + offset + 1) = (u_linear.base >> (8 * 1)) & 0xFF;
-      *(outbuffer + offset + 2) = (u_linear.base >> (8 * 2)) & 0xFF;
-      *(outbuffer + offset + 3) = (u_linear.base >> (8 * 3)) & 0xFF;
-      offset += sizeof(this->linear);
+      } u_right;
+      u_right.real = this->right;
+      *(outbuffer + offset + 0) = (u_right.base >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (u_right.base >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (u_right.base >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (u_right.base >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->right);
       union {
         float real;
         uint32_t base;
-      } u_angular;
-      u_angular.real = this->angular;
-      *(outbuffer + offset + 0) = (u_angular.base >> (8 * 0)) & 0xFF;
-      *(outbuffer + offset + 1) = (u_angular.base >> (8 * 1)) & 0xFF;
-      *(outbuffer + offset + 2) = (u_angular.base >> (8 * 2)) & 0xFF;
-      *(outbuffer + offset + 3) = (u_angular.base >> (8 * 3)) & 0xFF;
-      offset += sizeof(this->angular);
+      } u_left;
+      u_left.real = this->left;
+      *(outbuffer + offset + 0) = (u_left.base >> (8 * 0)) & 0xFF;
+      *(outbuffer + offset + 1) = (u_left.base >> (8 * 1)) & 0xFF;
+      *(outbuffer + offset + 2) = (u_left.base >> (8 * 2)) & 0xFF;
+      *(outbuffer + offset + 3) = (u_left.base >> (8 * 3)) & 0xFF;
+      offset += sizeof(this->left);
       return offset;
     }
 
@@ -73,30 +73,30 @@ namespace rover_udes
       union {
         float real;
         uint32_t base;
-      } u_linear;
-      u_linear.base = 0;
-      u_linear.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
-      u_linear.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
-      u_linear.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
-      u_linear.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
-      this->linear = u_linear.real;
-      offset += sizeof(this->linear);
+      } u_right;
+      u_right.base = 0;
+      u_right.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      u_right.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      u_right.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      u_right.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      this->right = u_right.real;
+      offset += sizeof(this->right);
       union {
         float real;
         uint32_t base;
-      } u_angular;
-      u_angular.base = 0;
-      u_angular.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
-      u_angular.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
-      u_angular.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
-      u_angular.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
-      this->angular = u_angular.real;
-      offset += sizeof(this->angular);
+      } u_left;
+      u_left.base = 0;
+      u_left.base |= ((uint32_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      u_left.base |= ((uint32_t) (*(inbuffer + offset + 1))) << (8 * 1);
+      u_left.base |= ((uint32_t) (*(inbuffer + offset + 2))) << (8 * 2);
+      u_left.base |= ((uint32_t) (*(inbuffer + offset + 3))) << (8 * 3);
+      this->left = u_left.real;
+      offset += sizeof(this->left);
      return offset;
     }
 
     const char * getType(){ return "rover_udes/Command"; };
-    const char * getMD5(){ return "53e547be5f92f7cd818ea563ca9c778b"; };
+    const char * getMD5(){ return "5a8f855f11876f1ff0cf3620c0dc5668"; };
 
   };
 

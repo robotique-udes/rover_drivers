@@ -11,17 +11,26 @@ Servo verticalCamServo;
 Servo horizontalCamServo;
 Encoder horizontalServoControl(A0);
 int horizontalServoGoal = 0;
+int verticalServoGoal = 0;
 bool currentlyTakingPanorama = false;
 
 // ROS node
 ros::NodeHandle nh;
 
+// function prototypes
+void callback_camServo (const rover_udes::CamCommand &msg);
+void updateHorizontalCamServo();
+void updateVerticalCamServo();
+
+// Subcriber using callback callback_camServo
+ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("cam_cmd", callback_camServo);
+
 // ROS callback
-void callback_camServo (const rover_udes::CamCommand &angles)
+void callback_camServo (const rover_udes::CamCommand &msg)
 {
 	/* This will be used for implementing constant intervals picture taking for panoramas */
 
-	// if (angles.is_pano and !currentlyTakingPanorama)
+	// if (msg.is_pano and !currentlyTakingPanorama)
 	// {
 	// 	currentlyTakingPanorama = true;
 	// }
@@ -33,9 +42,21 @@ void callback_camServo (const rover_udes::CamCommand &angles)
 	// }
 	// else
 	// {
-		horizontalServoGoal = angles.cam_horizontal;
-		verticalCamServo.writeMicroseconds((int)1500+angles.cam_vertical*500/90);
 	// }
+	if(msg.mode == 0)  // Position mode
+	{
+		horizontalServoGoal = msg.cam_horizontal;
+		verticalServoGoal = msg.cam_vertical;
+	}
+	else if(msg.mode == 1) // Velocity mode
+	{
+		horizontalServoGoal += msg.cam_horizontal;
+		verticalServoGoal += msg.cam_vertical;
+	}
+	else if(msg.mode == 2)  // Panorama mode
+	{
+		// TODO
+	}
 }
 
 // servoHorizontal
@@ -85,18 +106,21 @@ void updateHorizontalCamServo()
 	// }
 }
 
-// Subcriber using callback callback_camServo
-ros::Subscriber<rover_udes::CamCommand> ear ("cam_cmd",callback_camServo);
+void updateVerticalCamServo()
+{
+	verticalCamServo.writeMicroseconds((int)1500+verticalServoGoal*500/90);
+}
 
 void setup()
 {
 	horizontalCamServo.attach(6);
 	verticalCamServo.attach(7);
 	Timer2Manager::add(updateHorizontalCamServo);
+	Timer2Manager::add(updateVerticalCamServo);
 
 	Serial.begin(57600);
 	nh.initNode();
-	nh.subscribe(ear);
+	nh.subscribe(sub_cam_cmd);
 }
 
 void loop()

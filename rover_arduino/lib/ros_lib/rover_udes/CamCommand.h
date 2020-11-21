@@ -12,15 +12,15 @@ namespace rover_udes
   class CamCommand : public ros::Msg
   {
     public:
-      typedef bool _is_pano_type;
-      _is_pano_type is_pano;
+      typedef int8_t _mode_type;
+      _mode_type mode;
       typedef int32_t _cam_horizontal_type;
       _cam_horizontal_type cam_horizontal;
       typedef int32_t _cam_vertical_type;
       _cam_vertical_type cam_vertical;
 
     CamCommand():
-      is_pano(0),
+      mode(0),
       cam_horizontal(0),
       cam_vertical(0)
     {
@@ -30,12 +30,12 @@ namespace rover_udes
     {
       int offset = 0;
       union {
-        bool real;
+        int8_t real;
         uint8_t base;
-      } u_is_pano;
-      u_is_pano.real = this->is_pano;
-      *(outbuffer + offset + 0) = (u_is_pano.base >> (8 * 0)) & 0xFF;
-      offset += sizeof(this->is_pano);
+      } u_mode;
+      u_mode.real = this->mode;
+      *(outbuffer + offset + 0) = (u_mode.base >> (8 * 0)) & 0xFF;
+      offset += sizeof(this->mode);
       union {
         int32_t real;
         uint32_t base;
@@ -63,13 +63,13 @@ namespace rover_udes
     {
       int offset = 0;
       union {
-        bool real;
+        int8_t real;
         uint8_t base;
-      } u_is_pano;
-      u_is_pano.base = 0;
-      u_is_pano.base |= ((uint8_t) (*(inbuffer + offset + 0))) << (8 * 0);
-      this->is_pano = u_is_pano.real;
-      offset += sizeof(this->is_pano);
+      } u_mode;
+      u_mode.base = 0;
+      u_mode.base |= ((uint8_t) (*(inbuffer + offset + 0))) << (8 * 0);
+      this->mode = u_mode.real;
+      offset += sizeof(this->mode);
       union {
         int32_t real;
         uint32_t base;
@@ -96,7 +96,7 @@ namespace rover_udes
     }
 
     const char * getType(){ return "rover_udes/CamCommand"; };
-    const char * getMD5(){ return "6cbf974437ab72bc89c284fde406a0bd"; };
+    const char * getMD5(){ return "29b2b03e791400c6839d238bb5405384"; };
 
   };
 
