@@ -24,7 +24,7 @@ void updateHorizontalCamServo();
 void updateVerticalCamServo();
 
 // Subcriber using callback callback_camServo
-ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("cmd_ptu", callback_camServo);
+ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("mux_cmd_ptu", callback_camServo);
 
 // ROS callback
 void callback_camServo (const rover_udes::CamCommand &msg)
