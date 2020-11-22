@@ -10,8 +10,9 @@
 Servo verticalCamServo; 
 Servo horizontalCamServo;
 Encoder horizontalServoControl(A0);
-int horizontalServoGoal = 0;
-int verticalServoGoal = 0;
+float horizontalServoGoal = 0;
+float verticalServoGoal = 0;
+int mode = 0;
 bool currentlyTakingPanorama = false;
 
 // ROS node
@@ -23,7 +24,7 @@ void updateHorizontalCamServo();
 void updateVerticalCamServo();
 
 // Subcriber using callback callback_camServo
-ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("cam_cmd", callback_camServo);
+ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("cmd_ptu", callback_camServo);
 
 // ROS callback
 void callback_camServo (const rover_udes::CamCommand &msg)
@@ -43,20 +44,9 @@ void callback_camServo (const rover_udes::CamCommand &msg)
 	// else
 	// {
 	// }
-	if(msg.mode == 0)  // Position mode
-	{
-		horizontalServoGoal = msg.cam_horizontal;
-		verticalServoGoal = msg.cam_vertical;
-	}
-	else if(msg.mode == 1) // Velocity mode
-	{
-		horizontalServoGoal += msg.cam_horizontal;
-		verticalServoGoal += msg.cam_vertical;
-	}
-	else if(msg.mode == 2)  // Panorama mode
-	{
-		// TODO
-	}
+	mode = msg.mode;
+	horizontalServoGoal = msg.cam_horizontal;
+	verticalServoGoal = msg.cam_vertical;
 }
 
 // servoHorizontal
@@ -89,20 +79,44 @@ void updateHorizontalCamServo()
 	// 	}
 	// }
 	// else
-	// {	
+	// {
+	int speed = 1500;
+
+	if(mode == 0)  // position mode
+	{
 		int delta = horizontalServoGoal - position;
-	
+
 	/*  These two statements can be enabled for the camera to always use the shortest path to reach its goal,
-	    but this could cause problems with the wires */
+		but this could cause problems with the wires */
 				// while (delta >= 180)delta -= 360;
 				// while (delta < -180)delta += 360;
-		int speed = 1500;
 		if (delta > 5) speed = 1700;
 		else if (delta > 0) speed = 1600;
 		else if (delta < -5) speed = 1300;
 		else if (delta < 0) speed = 1400;
+	}
+	else if(mode == 1)  // velocity mode
+	{
+		float cmd = horizontalServoGoal;
+		// Limit velocity command to -1 and 1
+		if(cmd > 1.0)
+		{
+			cmd = 1.0;
+		}
+		else if(cmd < -1.0)
+		{
+			cmd = -1.0;
+		}
 
-		horizontalCamServo.writeMicroseconds(speed);
+		if((position > 175 && cmd > 0) || (position < -175 && cmd < 0))
+		{
+			cmd = 0;
+		}
+
+		speed = (200.0 * cmd) + 1500;
+	}
+
+	horizontalCamServo.writeMicroseconds(speed);
 	// }
 }
 

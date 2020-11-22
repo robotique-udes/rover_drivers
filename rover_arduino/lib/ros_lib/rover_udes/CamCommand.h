@@ -14,9 +14,9 @@ namespace rover_udes
     public:
       typedef int8_t _mode_type;
       _mode_type mode;
-      typedef int32_t _cam_horizontal_type;
+      typedef float _cam_horizontal_type;
       _cam_horizontal_type cam_horizontal;
-      typedef int32_t _cam_vertical_type;
+      typedef float _cam_vertical_type;
       _cam_vertical_type cam_vertical;
 
     CamCommand():
@@ -37,7 +37,7 @@ namespace rover_udes
       *(outbuffer + offset + 0) = (u_mode.base >> (8 * 0)) & 0xFF;
       offset += sizeof(this->mode);
       union {
-        int32_t real;
+        float real;
         uint32_t base;
       } u_cam_horizontal;
       u_cam_horizontal.real = this->cam_horizontal;
@@ -47,7 +47,7 @@ namespace rover_udes
       *(outbuffer + offset + 3) = (u_cam_horizontal.base >> (8 * 3)) & 0xFF;
       offset += sizeof(this->cam_horizontal);
       union {
-        int32_t real;
+        float real;
         uint32_t base;
       } u_cam_vertical;
       u_cam_vertical.real = this->cam_vertical;
@@ -71,7 +71,7 @@ namespace rover_udes
       this->mode = u_mode.real;
       offset += sizeof(this->mode);
       union {
-        int32_t real;
+        float real;
         uint32_t base;
       } u_cam_horizontal;
       u_cam_horizontal.base = 0;
@@ -82,7 +82,7 @@ namespace rover_udes
       this->cam_horizontal = u_cam_horizontal.real;
       offset += sizeof(this->cam_horizontal);
       union {
-        int32_t real;
+        float real;
         uint32_t base;
       } u_cam_vertical;
       u_cam_vertical.base = 0;
@@ -96,7 +96,7 @@ namespace rover_udes
     }
 
     const char * getType(){ return "rover_udes/CamCommand"; };
-    const char * getMD5(){ return "29b2b03e791400c6839d238bb5405384"; };
+    const char * getMD5(){ return "2be502209bee8b0aed7fd322b07721f1"; };
 
   };
 
