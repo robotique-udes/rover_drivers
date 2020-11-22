@@ -10,3 +10,14 @@ This arduino package is compiled and managed with PlatFormIO (extension in VSCod
 5. Run `rosrun rosserial_arduino make_libraries.py "path_to_the_library_destination"` (for VSCode, it's your project's "lib" folder)
 6. Within VSCode, add `#include <name_of_the_folder_containing_your_msg/custom_msg_file.h>`
 
+## Running the code in ROS
+`roslaunch rover_control ptu.launch`
+
+or
+
+```
+roscore
+rosrun rosserial_arduino serial_node.py /dev/ttyACM1
+```
+Make sure to connect to the right port.
+
