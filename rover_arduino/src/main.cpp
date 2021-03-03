@@ -8,18 +8,25 @@
   The horizontal servo (left-right) uses Arduino pin 6
   The horizontal encoder has to be plugged into the A0 pin of the Arduino 
   The vertical encoder has to be plugged into the A1 pin of the Arduino*/
+  
 Servo verticalCamServo; 
 Servo horizontalCamServo;
+
 Encoder horizontalServoControl(A0);
 Encoder verticalServoControl(A1);
+
 int horizontalServoGoal = 0;
+int verticalServoGoal = 0;
+
+int mode = 0;
+
 bool currentlyTakingPanorama = false;
 
 // ROS node
 ros::NodeHandle nh;
 
 // function prototypes
-void callback_camServo (const rover_udes::CamCommand &msg);
+void callback_camServo(const rover_udes::CamCommand &msg);
 void updateHorizontalCamServo();
 void updateVerticalCamServo();
 
