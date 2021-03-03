@@ -6,13 +6,13 @@
 // Servomotors
 /*The vertical servo (up-down) uses Arduino pin 7
   The horizontal servo (left-right) uses Arduino pin 6
-  The encoder for the horizontal servo has to be plugged in Arduino pin A0 */
+  The horizontal encoder has to be plugged into the A0 pin of the Arduino 
+  The vertical encoder has to be plugged into the A1 pin of the Arduino*/
 Servo verticalCamServo; 
 Servo horizontalCamServo;
 Encoder horizontalServoControl(A0);
-float horizontalServoGoal = 0;
-float verticalServoGoal = 0;
-int mode = 0;
+Encoder verticalServoControl(A1);
+int horizontalServoGoal = 0;
 bool currentlyTakingPanorama = false;
 
 // ROS node
