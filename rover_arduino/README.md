@@ -1,5 +1,5 @@
 ## Dependencies
-This arduino package is compiled and managed with PlatFormIO (extension in VSCode). The 
+This arduino package is compiled and managed with PlatFormIO (extension in VSCode). The
 
 ## Including custom messages on Arduino using VSCode
 
@@ -21,3 +21,4 @@ rosrun rosserial_arduino serial_node.py /dev/ttyACM1
 ```
 Make sure to connect to the right port.
 
+Add info about launching in
