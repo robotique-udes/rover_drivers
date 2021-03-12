@@ -1,4 +1,6 @@
 #include <ros.h>
+#include <geometry_msgs/Twist.h>
+#include <std_msgs/String.h>
 #include "rover_udes/CamCommand.h"
 #include "kg_encoder.h" //uses timer2
 #include <Servo.h>
@@ -33,7 +35,10 @@ void updateHorizontalCamServo();
 void updateVerticalCamServo();
 
 // Subcriber using callback callback_camServo
-ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("mux_cmd_ptu", callback_camServo);
+geometry_msgs::Twist infoEncoder;
+// ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("mux_cmd_ptu", callback_camServo);
+ros::Subscriber<rover_udes::CamCommand> sub_cam_cmd ("/cmd_ptu", callback_camServo);
+ros::Publisher test_output("/encoder_status", &infoEncoder);
 
 // ROS callback
 void callback_camServo (const rover_udes::CamCommand &msg)
@@ -56,6 +61,7 @@ void callback_camServo (const rover_udes::CamCommand &msg)
 	mode = msg.mode;
 	horizontalServoGoal = msg.cam_horizontal;
 	verticalServoGoal = msg.cam_vertical;
+	
 }
 
 float velocityLimitation(float vel, float pos) // Limit velocity command to -1, 1 and 0
@@ -197,10 +203,16 @@ void setup()
 	Serial.begin(57600);
 	nh.initNode();
 	nh.subscribe(sub_cam_cmd);
+	nh.advertise(test_output);
+	
 }
 
 void loop()
 {
 	// Continuously updating the node
 	nh.spinOnce();
+	test_output.publish(&infoEncoder);
+	infoEncoder.linear.x = horizontalServoControl.ReadAngle(); // Will act as horizontal display of encoder
+	infoEncoder.linear.y = verticalServoControl.ReadAngle(); // Will act as vertical display of encoder
+    
 }
