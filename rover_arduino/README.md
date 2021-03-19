@@ -6,7 +6,7 @@ This arduino package is compiled and managed with PlatFormIO (extension to insta
 
 To install these libraries, go to the platformIO menu in vscode and under the "**libraries**" option
 
-## Including custom messages on Arduino using VSCode
+# Including custom messages on Arduino using VSCode
 
 1. Make sure that the folder containing your custom messages is in your catkin_ws
 2. Build your workspace using `catkin_make`
@@ -33,7 +33,7 @@ First and easiest method to run the node will be
 
 `roslaunch rover_control ptu.launch`
 
-which will launch a serial node attached to a given port (usually /dev/ttyACMX) where X can be found either by
+which will launch a serial node attached to a given port (usually /dev/ttyACMX) where X can be found as explained in step #1
     
 
 ## 2. Method using ros commands
