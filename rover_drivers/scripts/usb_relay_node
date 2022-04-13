@@ -1,0 +1,7 @@
+#! /usr/bin/env python3
+
+from rover_drivers.ros_usb_relay import UsbRelayNode
+
+if __name__ == '__main__':
+    node = UsbRelayNode()
+    node.run()

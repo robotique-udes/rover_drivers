@@ -1,0 +1,6 @@
+<?xml version='1.0'?>
+<launch>
+
+    <node pkg="rover_drivers" name="usb_relay_node1" type="usb_relay_node" output="screen" />
+
+</launch>
