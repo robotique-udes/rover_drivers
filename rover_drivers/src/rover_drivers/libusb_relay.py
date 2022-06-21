@@ -1,5 +1,4 @@
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import serial
 from enum import Enum
@@ -9,6 +8,7 @@ class RelayCmd(Enum):
     """
     Enum for the relay commands.
     """
+
     VERSION = 0x5A
     GET = 0x5B
     SET = 0x5C
@@ -21,6 +21,7 @@ class RelayState(Enum):
     """
     Enum for the relay states.
     """
+
     ON = True
     OFF = False
 
@@ -86,6 +87,7 @@ class Relay(Enum):
     """
     Enum for the relay ports
     """
+
     R1 = 0
     R2 = 1
     R3 = 2
@@ -131,14 +133,7 @@ class UsbRelay:
         :param baudrate (int): The baudrate to use.
         :param timeout (Optional[int]): The timeout to use.
         """
-        self.serial = serial_type(
-            port=port, baudrate=baudrate, timeout=timeout, *args, **kwargs)
-
-    def __del__(self):
-        """
-        Close the serial port.
-        """
-        self.serial.close()
+        self.serial = serial_type(port=port, baudrate=baudrate, timeout=timeout, *args, **kwargs)
 
     def read_all(self):
         self.serial.write(bytes([RelayCmd.GET.value]))
