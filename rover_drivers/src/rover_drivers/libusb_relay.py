@@ -2,6 +2,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import serial
 from enum import Enum
+from struct import pack
+from sys import version_info
+
+
+def int_to_bytes(integer):
+    if version_info.major == 2:
+        return pack("B", integer)
+    else:
+        return bytes([integer])
 
 
 class RelayCmd(Enum):
@@ -152,7 +161,7 @@ class UsbRelay:
         Toggle the relay.
         :param relay (Relay): The relay to toggle.
         """
-        self.serial.write(bytes([relay.byte(~self.read(relay))]))
+        self.serial.write(int_to_bytes(relay.byte(~self.read(relay))))
 
     def close(self):
         """
@@ -165,23 +174,23 @@ class UsbRelay:
         Turn the relay on.
         :param relay (Relay): The relay to turn on.
         """
-        self.serial.write(bytes([relay.byte(RelayState.ON)]))
+        self.serial.write(int_to_bytes(relay.byte(RelayState.ON)))
 
     def on_all(self):
         """
         Turn all relays on.
         """
-        self.serial.write(bytes([RelayCmd.ALL.value]))
+        self.serial.write(int_to_bytes(RelayCmd.ALL.value))
 
     def off_all(self):
         """
         Turn all relays off.
         """
-        self.serial.write(bytes([RelayCmd.NONE.value]))
+        self.serial.write(int_to_bytes(RelayCmd.NONE.value))
 
     def off(self, relay):
         """
         Turn the relay off.
         :param relay (Relay): The relay to turn off.
         """
-        self.serial.write(bytes([relay.byte(RelayState.OFF)]))
+        self.serial.write(int_to_bytes(relay.byte(RelayState.OFF)))
