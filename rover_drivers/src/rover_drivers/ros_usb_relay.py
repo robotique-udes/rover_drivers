@@ -35,11 +35,11 @@ class UsbRelayNode(object):
 
     def clear_srv_cb(self, req):
         self.relay.off_all()
-        return SetBoolResponse(success=True)
+        return ()
 
     def fullon_srv_cb(self, req):
         self.relay.on_all()
-        return SetBoolResponse(success=True)
+        return ()
 
     def run(self):
         try:
