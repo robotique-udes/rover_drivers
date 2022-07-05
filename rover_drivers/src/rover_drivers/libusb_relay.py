@@ -126,7 +126,7 @@ class Relay(Enum):
 
 
 class UsbRelay:
-    def __init__(self, port="/dev/ttyACM0", baudrate=9600, timeout=None, *args, serial_type=serial.Serial, **kwargs):
+    def __init__(self, port="/dev/ttyACM0", baudrate=9600, timeout=None, serial_type=serial.Serial, *args, **kwargs):
         """
         Initialize the USB relay.
         :param port (str): The serial port to use.
@@ -137,7 +137,7 @@ class UsbRelay:
 
     def read_all(self):
         self.serial.write(bytes([RelayCmd.GET.value]))
-        return [RelayState(int(i)) for i in f"{self.serial.read(1)[0]:08b}"][::-1]
+        return [RelayState(int(i)) for i in "{:08b}".format(self.serial.read(1)[0])][::-1]
 
     def read(self, relay):
         """
