@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<launch>
+
+    <!-- Launch mast camera -->
+    <include file="$(find rover_cam)/launch/camera.launch">
+        <arg name="video_interface" value="1" />
+    </include>
+
+    <!-- Launch front camera -->
+    <include file="$(find rover_cam)/launch/camera.launch">
+        <arg name="video_interface" value="0" />
+    </include>
+
+</launch>
